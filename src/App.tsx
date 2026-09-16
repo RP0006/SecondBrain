@@ -51,6 +51,28 @@ import { AdminReleases } from './pages/admin/AdminReleases';
 export const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // Scroll reveal observer for fade-in-up animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    const elements = document.querySelectorAll('.fade-in-up');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   // Particle canvas for cinematic backdrop
   useEffect(() => {
     const canvas = canvasRef.current;

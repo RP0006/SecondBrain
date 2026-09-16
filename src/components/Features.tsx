@@ -6,7 +6,6 @@ import {
   Repeat,
   Zap,
   TrendingUp,
-  CheckCircle2
 } from 'lucide-react';
 import { APP_CONFIG } from '../data/config';
 import type { FeatureItem } from '../data/config';
@@ -14,10 +13,20 @@ import type { FeatureItem } from '../data/config';
 const iconMap: Record<string, React.ReactNode> = {
   FolderGit2: <FolderGit2 size={24} color="#00f0ff" />,
   Network: <Network size={24} color="#38bdf8" />,
-  PenTool: <PenTool size={24} color="#60a5fa" />,
-  Repeat: <Repeat size={24} color="#00f0ff" />,
-  Zap: <Zap size={24} color="#38bdf8" />,
-  TrendingUp: <TrendingUp size={24} color="#60a5fa" />,
+  PenTool: <PenTool size={24} color="#00f0ff" />,
+  Repeat: <Repeat size={24} color="#38bdf8" />,
+  Zap: <Zap size={24} color="#00f0ff" />,
+  TrendingUp: <TrendingUp size={24} color="#38bdf8" />,
+};
+
+// Simplified metric data to pair with config features
+const metricData: Record<string, string> = {
+  'problem-management': '0ms',
+  'dsa-patterns': '24+',
+  'notes-pitfalls': '3x',
+  'revision-engine': '94%',
+  'search-filter': '<1ms',
+  'progress-analytics': '360°'
 };
 
 export const Features: React.FC = () => {
@@ -31,144 +40,123 @@ export const Features: React.FC = () => {
   };
 
   return (
-    <section id="features" style={{ padding: '90px 0', position: 'relative' }}>
+    <section id="features" style={{ padding: 'var(--section-padding, 120px) 0', position: 'relative' }}>
       <div className="container">
         {/* Section Title */}
-        <div className="section-header">
+        <div className="section-header fade-in-up visible">
           <span className="section-tag">Core Capabilities</span>
           <h2 className="section-title">
-            Built for <span className="text-gradient">Engineers Who Want Retention</span>
+            Built for Engineers Who <span className="text-gradient">Demand Mastery</span>
           </h2>
           <p className="section-desc">
-            Stop losing track of solutions in random markdown files or scattered Notion boards. Every feature is
-            custom-tailored to solve the specific pain points of technical interview preparation.
+            Stop losing track of solutions in scattered Notion pages. Everything you need to
+            build deep algorithmic intuition, organized beautifully.
           </p>
         </div>
 
-        {/* 6 Feature Grid */}
+        {/* Feature Grid - Minimalist Layout */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '24px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '32px',
           }}
         >
-          {APP_CONFIG.features.map((feature: FeatureItem) => (
+          {APP_CONFIG.features.map((feature: FeatureItem, index) => (
             <div
               key={feature.id}
-              className="glass-card"
+              className={`glass-card fade-in-up visible stagger-${(index % 6) + 1}`}
               onMouseMove={handleMouseMove}
               style={{
-                padding: '32px',
+                padding: '40px 32px',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                height: '100%',
               }}
             >
-              <div>
-                {/* Header with Icon and Badge */}
+              {/* Top Row: Icon + Large Metric */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: '28px',
+                }}
+              >
                 <div
                   style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '16px',
+                    background: 'rgba(0, 240, 255, 0.05)',
+                    border: '1px solid rgba(0, 240, 255, 0.15)',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
-                    marginBottom: '20px',
+                    justifyContent: 'center',
+                    boxShadow: '0 8px 24px -8px rgba(0, 240, 255, 0.2)',
                   }}
                 >
-                  <div
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      borderRadius: '14px',
-                      background: 'rgba(0, 240, 255, 0.08)',
-                      border: '1px solid rgba(0, 240, 255, 0.25)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 0 20px rgba(0, 240, 255, 0.15)',
-                    }}
-                  >
-                    {iconMap[feature.iconName] || <Zap size={24} color="#00f0ff" />}
-                  </div>
-
-                  <span
-                    style={{
-                      padding: '4px 10px',
-                      borderRadius: '9999px',
-                      fontSize: '0.74rem',
-                      fontWeight: 700,
-                      background: 'rgba(56, 189, 248, 0.1)',
-                      color: '#38bdf8',
-                      border: '1px solid rgba(56, 189, 248, 0.25)',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {feature.highlightBadge}
-                  </span>
+                  {iconMap[feature.iconName] || <Zap size={24} color="#00f0ff" />}
                 </div>
 
-                {/* Title and Tagline */}
+                {/* Big Number Metric instead of standard badge */}
+                <span
+                  style={{
+                    fontSize: '2rem',
+                    fontWeight: 900,
+                    color: 'rgba(255, 255, 255, 0.08)',
+                    fontFamily: 'var(--font-mono)',
+                    lineHeight: 1,
+                  }}
+                >
+                  {metricData[feature.id] || '∞'}
+                </span>
+              </div>
+
+              {/* Title & Description */}
+              <div style={{ flexGrow: 1 }}>
                 <h3
                   style={{
                     fontSize: '1.35rem',
-                    fontWeight: 700,
+                    fontWeight: 800,
                     letterSpacing: '-0.02em',
                     color: '#f8fafc',
-                    marginBottom: '6px',
+                    marginBottom: '8px',
                   }}
                 >
                   {feature.title}
                 </h3>
                 <div
                   style={{
-                    fontSize: '0.84rem',
-                    color: '#38bdf8',
+                    fontSize: '0.85rem',
+                    color: '#00f0ff',
                     fontWeight: 600,
-                    marginBottom: '14px',
+                    marginBottom: '16px',
                   }}
                 >
                   {feature.tagline}
                 </div>
-
-                {/* Description */}
                 <p
                   style={{
-                    fontSize: '0.94rem',
+                    fontSize: '0.92rem',
                     color: '#94a3b8',
-                    lineHeight: 1.6,
-                    marginBottom: '24px',
+                    lineHeight: 1.65,
                   }}
                 >
                   {feature.description}
                 </p>
               </div>
 
-              {/* Preview Details / Checklist */}
+              {/* Minimal Accent Line */}
               <div
                 style={{
-                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                  paddingTop: '18px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '8px',
+                  marginTop: '24px',
+                  height: '2px',
+                  width: '32px',
+                  background: 'linear-gradient(90deg, #00f0ff, transparent)',
+                  borderRadius: '2px',
                 }}
-              >
-                {feature.previewDetails.map((detail, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      fontSize: '0.82rem',
-                      color: '#cbd5e1',
-                    }}
-                  >
-                    <CheckCircle2 size={14} color="#00f0ff" style={{ flexShrink: 0 }} />
-                    <span>{detail}</span>
-                  </div>
-                ))}
-              </div>
+              />
             </div>
           ))}
         </div>
